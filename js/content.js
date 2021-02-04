@@ -1,29 +1,31 @@
 let countInCheck, sel, real, timerDel, timerLoad,
-    items = $("ytd-two-column-browse-results-renderer #items");
-
-
-
+    items = $("ytd-two-column-browse-results-renderer #items"),
+    needCount = 20;
 
 $("ytd-two-column-browse-results-renderer").ready(function() {
+    // Добавляю кнопку
     $('<div id="CustomFilter" class="style-scope yt-dropdown-menu">' +
         '<div id="FilterList" class="expand"> <img src="https://i.ibb.co/LhJc5TZ/filter.png"/>Фильтр видео </div>' +
         '<ul class="dropdown-content style-scope paper-menu-button">' +
-        //'<li value="1">Скрыть все начатые видео</li>' +
-        //'<li value="50">Скрыть все видео просмотренные более половины</li>' +
         '<li value="none">Скрыть все новые видео</li>' +
         '<li value="viewer">Скрыть все просмотренные видео</li>' +
         '</ul>' +
         '</div>').insertAfter("#primary-items");
+    // По умолчанию кнопка скрыта
     $("#CustomFilter ul").hide();
+    // При щелчке раскрываем список
     $("#CustomFilter #FilterList").click(function() {
         $(this).next().animate({ 'height': 'toggle' });
     });
 
+    // Вешаем листенер на нажатие
     $("#CustomFilter li").unbind("click").click(function() {
         $(this).attr("checked", "true");
         sel = $(this).attr("value");
         $("#CustomFilter li").not(this).removeAttr("checked");
         $("#CustomFilter ul").hide();
+
+        // Первый запуск функций, после выбора необходимой функции
         items.children().each(function() {
             if (sel == 'none') {
                 if ($(this).find("#progress").length == 0) {
@@ -43,8 +45,12 @@ $("ytd-two-column-browse-results-renderer").ready(function() {
                 }
             }
         });
+
+        // Удаляем видео
         clear();
     });
+
+    // Прячем выпадающее меню, когда пользователь щелкает в другом месте
     $(document).mouseup(function(e) {
         var container = $("#CustomFilter ul");
         if (container.has(e.target).length === 0) {
@@ -54,7 +60,7 @@ $("ytd-two-column-browse-results-renderer").ready(function() {
 
 });
 
-
+// Удаляю выбранные видео
 function clear() {
     if (sel == "none") {
         $("ytd-two-column-browse-results-renderer #items").unbind("DOMNodeInserted").on("DOMNodeInserted", "YTD-THUMBNAIL-OVERLAY-TIME-STATUS-RENDERER", function(event) {
@@ -80,13 +86,14 @@ function clear() {
     }
 }
 
+// Проверяю количество и при необходимости загружаю новые видео
 function checkCount() {
     let count,
         scroll = $(window).scrollTop();
 
     function tick() {
         count = $("ytd-two-column-browse-results-renderer #items ytd-grid-video-renderer");
-        if (count.length < 20) {
+        if (count.length < needCount) {
             scroll = $(window).scrollTop();
             document.querySelector('yt-next-continuation').scrollIntoView();
             $('html, body').scrollTop(0);
