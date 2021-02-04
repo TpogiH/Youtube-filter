@@ -1,0 +1,20 @@
+{
+    "manifest_version": 2,
+    "name": "Youtube filter",
+    "description": "Добавляет фильтр на странице со списком видео.",
+    "version": "1.0.0",
+    "icons": { "128": "images/icon_128.png" },
+    "browser_action": {
+        "default_icon": "images/off.png",
+        "default_title": "Youtube filter",
+        "default_popup": "popup.html"
+    },
+    "content_scripts": [{
+        "matches": [
+            "https://www.youtube.com/c/*/videos",
+            "https://www.youtube.com/c/*/videos*"
+        ],
+        "js": ["js/jquery-3.5.1.min.js", "js/content.js"],
+        "css": ["css/append.css"]
+    }]
+}

@@ -1,0 +1,52 @@
+#CustomFilter {
+    color: var(--yt-spec-text-secondary);
+    font-size: var(--ytd-tab-system_-_font-size);
+    font-weight: var(--ytd-tab-system_-_font-weight);
+    letter-spacing: var(--ytd-tab-system_-_letter-spacing);
+    text-transform: var(--ytd-tab-system_-_text-transform);
+    position: relative;
+    padding-right: 50px;
+    height: 27px;
+    cursor: pointer;
+}
+
+#CustomFilter img {
+    padding-right: 5px;
+}
+
+#CustomFilter #FilterList {
+    display: flex;
+    align-items: center;
+    height: 22px;
+    padding-bottom: 5px;
+}
+
+#CustomFilter ul {
+    list-style: none;
+    position: absolute;
+    display: inline-table;
+    z-index: 99999999;
+    cursor: pointer;
+}
+
+#CustomFilter li {
+    height: 20px;
+    display: inline-table;
+    min-width: 400px;
+    padding: 16px 8px;
+    text-align: left;
+}
+
+#CustomFilter li:hover {
+    background-color: #eeeeee;
+}
+
+#CustomFilter li[checked] {
+    background-color: #eeeeee;
+}
+
+#CustomFilterIcon {
+    flex-shrink: 0;
+    margin-right: var(--ytd-margin-2x);
+    color: var(--yt-spec-text-secondary);
+}
