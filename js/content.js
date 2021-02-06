@@ -10,9 +10,7 @@ $("#tabsContainer").ready(function() {
 
         // Запускаем проверку при переходе с другой вкладки
         $("#tabsContainer").unbind('click').click(function() {
-            console.log('3')
             $("ytd-two-column-browse-results-renderer #sub-menu").unbind("DOMNodeInserted").on("DOMNodeInserted", "#play-all", function() {
-                console.log('4')
                 if (!$('#CustomFilter').length) addButton();
             });
         });
