@@ -3,62 +3,15 @@ let countInCheck, sel, real, timerDel, timerLoad,
     needCount = 20;
 
 $("ytd-two-column-browse-results-renderer").ready(function() {
-    // Добавляю кнопку
-    $('<div id="CustomFilter" class="style-scope yt-dropdown-menu">' +
-        '<div id="FilterList" class="expand"> <img src="https://i.ibb.co/LhJc5TZ/filter.png"/>Фильтр видео </div>' +
-        '<ul class="dropdown-content style-scope paper-menu-button">' +
-        '<li value="none">Скрыть все новые видео</li>' +
-        '<li value="viewer">Скрыть все просмотренные видео</li>' +
-        '</ul>' +
-        '</div>').insertAfter("#primary-items");
-    // По умолчанию кнопка скрыта
-    $("#CustomFilter ul").hide();
-    // При щелчке раскрываем список
-    $("#CustomFilter #FilterList").click(function() {
-        $(this).next().animate({ 'height': 'toggle' });
-    });
-
-    // Вешаем листенер на нажатие
-    $("#CustomFilter li").unbind("click").click(function() {
-        $(this).attr("checked", "true");
-        sel = $(this).attr("value");
-        $("#CustomFilter li").not(this).removeAttr("checked");
-        $("#CustomFilter ul").hide();
-
-        // Первый запуск функций, после выбора необходимой функции
-        items.children().each(function() {
-            if (sel == 'none') {
-                if ($(this).find("#progress").length == 0) {
-                    $(this).remove();
-                    if (!countInCheck) {
-                        countInCheck = true;
-                        checkCount();
-                    }
-                }
-            } else if (sel == "viewer") {
-                if ($(this).find("#progress").length == 1) {
-                    $(this).remove();
-                    if (!countInCheck) {
-                        countInCheck = true;
-                        checkCount();
-                    }
-                }
-            }
-        });
-
-        // Удаляем видео
-        clear();
-    });
-
-    // Прячем выпадающее меню, когда пользователь щелкает в другом месте
-    $(document).mouseup(function(e) {
-        var container = $("#CustomFilter ul");
-        if (container.has(e.target).length === 0) {
-            container.hide();
-        }
-    });
-
+    if (!$('#CustomFilter').length)
+        addButton();
 });
+
+$('#tabsContainer').unbind('click').click(function() {
+    if (!$('#CustomFilter').length)
+        addButton();
+});
+
 
 // Удаляю выбранные видео
 function clear() {
@@ -104,4 +57,65 @@ function checkCount() {
         }
     }
     timerLoad = setInterval(tick, 300);
+}
+
+// Добавляю кнопку
+function addButton() {
+    $('<div id="CustomFilter" class="style-scope yt-dropdown-menu">' +
+        '<div id="FilterList" class="expand"> <img src="https://i.ibb.co/LhJc5TZ/filter.png"/>Фильтр видео </div>' +
+        '<ul class="dropdown-content style-scope paper-menu-button">' +
+        '<li value="none">Скрыть все новые видео</li>' +
+        '<li value="viewer">Скрыть все просмотренные видео</li>' +
+        '</ul>' +
+        '</div>').insertAfter("#primary-items");
+    // По умолчанию кнопка скрыта
+    $("#CustomFilter ul").hide();
+    // При щелчке раскрываем список
+    $("#CustomFilter #FilterList").click(function() {
+        $(this).next().animate({ 'height': 'toggle' });
+    });
+
+    // Прячем выпадающее меню, когда пользователь щелкает в другом месте
+    $(document).mouseup(function(e) {
+        var container = $("#CustomFilter ul");
+        if (container.has(e.target).length === 0) {
+            container.hide();
+        }
+    });
+
+    addAction();
+}
+
+// Вешаем листенер на нажатие
+function addAction() {
+    $("#CustomFilter li").unbind("click").click(function() {
+        $(this).attr("checked", "true");
+        sel = $(this).attr("value");
+        $("#CustomFilter li").not(this).removeAttr("checked");
+        $("#CustomFilter ul").hide();
+
+        // Первый запуск функций, после выбора необходимой функции
+        items.children().each(function() {
+            if (sel == 'none') {
+                if ($(this).find("#progress").length == 0) {
+                    $(this).remove();
+                    if (!countInCheck) {
+                        countInCheck = true;
+                        checkCount();
+                    }
+                }
+            } else if (sel == "viewer") {
+                if ($(this).find("#progress").length == 1) {
+                    $(this).remove();
+                    if (!countInCheck) {
+                        countInCheck = true;
+                        checkCount();
+                    }
+                }
+            }
+        });
+
+        // Удаляем видео
+        clear();
+    });
 }
