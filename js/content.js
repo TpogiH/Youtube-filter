@@ -5,10 +5,8 @@ let countInCheck, sel, real, timerDel, timerLoad,
 
 $("#tabsContainer").ready(function() {
     // Запускаем проверку при обновлении странице на вкладке "Видео"
-    console.log('1')
     if (!$('#CustomFilter').length) {
         addButton();
-        console.log('2')
 
         // Запускаем проверку при переходе с другой вкладки
         $("#tabsContainer").unbind('click').click(function() {
@@ -20,12 +18,6 @@ $("#tabsContainer").ready(function() {
         });
     }
 });
-
-
-
-
-
-
 
 // Удаляю выбранные видео
 function clear() {
