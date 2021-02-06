@@ -2,10 +2,13 @@
     "manifest_version": 2,
     "name": "Youtube filter",
     "description": "Добавляет фильтр на странице со списком видео.",
-    "version": "1.0.0",
-    "icons": { "128": "images/icon_128.png" },
+    "version": "1.0.2",
+    "icons": {
+        "16": "images/icon_16.png",
+        "48": "images/icon_48.png",
+        "128": "images/icon_128.png"
+    },
     "browser_action": {
-        "default_icon": "images/off.png",
         "default_title": "Youtube filter",
         "default_popup": "popup.html"
     },

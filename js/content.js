@@ -2,15 +2,29 @@ let countInCheck, sel, real, timerDel, timerLoad,
     items = $("ytd-two-column-browse-results-renderer #items"),
     needCount = 20;
 
-$("ytd-two-column-browse-results-renderer").ready(function() {
-    if (!$('#CustomFilter').length)
+
+$("#tabsContainer").ready(function() {
+    // Запускаем проверку при обновлении странице на вкладке "Видео"
+    console.log('1')
+    if (!$('#CustomFilter').length) {
         addButton();
+        console.log('2')
+
+        // Запускаем проверку при переходе с другой вкладки
+        $("#tabsContainer").unbind('click').click(function() {
+            console.log('3')
+            $("ytd-two-column-browse-results-renderer #sub-menu").unbind("DOMNodeInserted").on("DOMNodeInserted", "#play-all", function() {
+                console.log('4')
+                if (!$('#CustomFilter').length) addButton();
+            });
+        });
+    }
 });
 
-$('#tabsContainer').unbind('click').click(function() {
-    if (!$('#CustomFilter').length)
-        addButton();
-});
+
+
+
+
 
 
 // Удаляю выбранные видео
@@ -68,8 +82,10 @@ function addButton() {
         '<li value="viewer">Скрыть все просмотренные видео</li>' +
         '</ul>' +
         '</div>').insertAfter("#primary-items");
+
     // По умолчанию кнопка скрыта
     $("#CustomFilter ul").hide();
+
     // При щелчке раскрываем список
     $("#CustomFilter #FilterList").click(function() {
         $(this).next().animate({ 'height': 'toggle' });

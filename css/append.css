@@ -6,6 +6,7 @@
     text-transform: var(--ytd-tab-system_-_text-transform);
     position: relative;
     padding-right: 50px;
+    padding-top: 2px;
     height: 27px;
     cursor: pointer;
 }
