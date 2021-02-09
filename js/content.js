@@ -2,20 +2,13 @@ let countInCheck, sel, real, timerDel, timerLoad,
     items = $("ytd-two-column-browse-results-renderer #items"),
     needCount = 20;
 
-
-$("#tabsContainer").ready(function() {
-    // Запускаем проверку при обновлении странице на вкладке "Видео"
-    if (!$('#CustomFilter').length) {
-        addButton();
-
-        // Запускаем проверку при переходе с другой вкладки
-        $("#tabsContainer").unbind('click').click(function() {
-            $("ytd-two-column-browse-results-renderer #sub-menu").unbind("DOMNodeInserted").on("DOMNodeInserted", "#play-all", function() {
-                if (!$('#CustomFilter').length) addButton();
-            });
-        });
+// Т.к. Ютуб не загружает каждый раз страницу, а работает с фреймами, то мы вешаем таймер, на проверку текущего адреса, и при необходимости добавляем кноку
+setInterval(() => {
+    if (window.location.href.match(/https:\/\/www\.youtube\.com\/c\/.*\/videos.*/).length != 0) {
+        if (!$('#CustomFilter').length)
+            addButton();
     }
-});
+}, 1000);
 
 // Удаляю выбранные видео
 function clear() {
@@ -92,7 +85,7 @@ function addButton() {
     addAction();
 }
 
-// Вешаем листенер на нажатие
+// Вешаем листенер на нажатие кнопки фильтра
 function addAction() {
     $("#CustomFilter li").unbind("click").click(function() {
         $(this).attr("checked", "true");
