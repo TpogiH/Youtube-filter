@@ -1,5 +1,5 @@
-let countInCheck, sel, real, timerDel, timerLoad, items
-needCount = 20;
+let countInCheck, sel, real, timerDel, timerLoad, items,
+    needCount = 20;
 
 // Т.к. Ютуб не загружает каждый раз страницу, а работает с фреймами, то мы вешаем таймер, на проверку текущего адреса, и при необходимости добавляем кноку
 setInterval(() => {
@@ -22,7 +22,6 @@ function clear() {
                     }
                 }
             }
-
         });
     } else if (sel == "viewer") {
         $("ytd-two-column-browse-results-renderer #items").unbind("DOMNodeInserted").on("DOMNodeInserted", "YTD-THUMBNAIL-OVERLAY-RESUME-PLAYBACK-RENDERER", function(event) {
@@ -31,10 +30,8 @@ function clear() {
                 countInCheck = true;
                 checkCount();
             }
-
         });
     }
-
 }
 
 // Проверяю количество и при необходимости загружаю новые видео
