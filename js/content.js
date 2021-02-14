@@ -1,6 +1,5 @@
-let countInCheck, sel, real, timerDel, timerLoad,
-    items = $("ytd-two-column-browse-results-renderer #items"),
-    needCount = 20;
+let countInCheck, sel, real, timerDel, timerLoad, items
+needCount = 20;
 
 // Т.к. Ютуб не загружает каждый раз страницу, а работает с фреймами, то мы вешаем таймер, на проверку текущего адреса, и при необходимости добавляем кноку
 setInterval(() => {
@@ -32,8 +31,10 @@ function clear() {
                 countInCheck = true;
                 checkCount();
             }
+
         });
     }
+
 }
 
 // Проверяю количество и при необходимости загружаю новые видео
@@ -43,9 +44,10 @@ function checkCount() {
 
     function tick() {
         count = $("ytd-two-column-browse-results-renderer #items ytd-grid-video-renderer");
+        $("ytd-continuation-item-renderer:not(:last)").remove();
         if (count.length < needCount) {
             scroll = $(window).scrollTop();
-            document.querySelector('yt-next-continuation').scrollIntoView();
+            document.querySelector('ytd-continuation-item-renderer').scrollIntoView();
             $('html, body').scrollTop(0);
             $(window).scrollTop(scroll);
         } else {
@@ -93,7 +95,8 @@ function addAction() {
         $("#CustomFilter li").not(this).removeAttr("checked");
         $("#CustomFilter ul").hide();
 
-        // Первый запуск функций, после выбора необходимой функции
+        // Первый запуск, после выбора необходимой функции
+        items = $("ytd-two-column-browse-results-renderer #items");
         items.children().each(function() {
             if (sel == 'none') {
                 if ($(this).find("#progress").length == 0) {
