@@ -23,18 +23,18 @@
 }
 
 #CustomFilter ul {
-    list-style: none;
-    position: absolute;
-    display: inline-table;
-    z-index: 99999999;
-    cursor: pointer;
+    padding: 8px 0;
+}
+
+#CustomFilter ul.dark {
+    background-color: #242424;
 }
 
 #CustomFilter li {
     height: 20px;
     display: inline-table;
     min-width: 400px;
-    padding: 16px 8px;
+    padding: 14px 8px;
     text-align: left;
 }
 
@@ -42,8 +42,16 @@
     background-color: #eeeeee;
 }
 
+#CustomFilter li:hover.dark {
+    background-color: #353535;
+}
+
 #CustomFilter li[checked] {
     background-color: #eeeeee;
+}
+
+#CustomFilter li[checked].dark {
+    background-color: #353535;
 }
 
 #CustomFilterIcon {
@@ -51,3 +59,24 @@
     margin-right: var(--ytd-margin-2x);
     color: var(--yt-spec-text-secondary);
 }
+
+#CustomFilter #menu {
+    list-style: none;
+    position: absolute;
+    display: inline-table;
+    z-index: 99999999;
+    cursor: pointer;
+    text-transform: none;
+    font-weight: 400;
+    font-family: 'Roboto', 'Noto', sans-serif;
+}
+
+
+/* -paper-font-menu_-_font-family: var(--paper-font-common-base_-_font-family);
+    --paper-font-menu_-_-webkit-font-smoothing: var(--paper-font-common-base_-_-webkit-font-smoothing);
+    --paper-font-menu_-_white-space: var(--paper-font-common-nowrap_-_white-space);
+    --paper-font-menu_-_overflow: var(--paper-font-common-nowrap_-_overflow);
+    --paper-font-menu_-_text-overflow: var(--paper-font-common-nowrap_-_text-overflow);
+    --paper-font-menu_-_font-size: 13px;
+    --paper-font-menu_-_font-weight: 500;
+    --paper-font-menu_-_line-height: 24px; */
