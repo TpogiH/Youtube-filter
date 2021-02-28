@@ -33,9 +33,10 @@
 #CustomFilter li {
     height: 20px;
     display: inline-table;
-    min-width: 400px;
     padding: 14px 8px;
     text-align: left;
+    white-space: nowrap;
+    width: calc(100% - 16px);
 }
 
 #CustomFilter li:hover {

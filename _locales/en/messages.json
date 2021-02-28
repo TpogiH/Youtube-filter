@@ -1,0 +1,17 @@
+{
+    "extensionName": {
+        "message": "Yotube filter"
+    },
+    "extensionDescription": {
+        "message": "Adds a filter on the video list page."
+    },
+    "button": {
+        "message": "filter video"
+    },
+    "filter1": {
+        "message": "Delete all new video"
+    },
+    "filter2": {
+        "message": "Delete all viewer video"
+    }
+}

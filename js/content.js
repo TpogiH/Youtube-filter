@@ -71,26 +71,28 @@ function checkCount() {
 
 // Добавляю кнопку
 function addButton() {
+    let button = chrome.i18n.getMessage('button'),
+        filter1 = chrome.i18n.getMessage('filter1'),
+        filter2 = chrome.i18n.getMessage('filter2');
     if (document.querySelector("html").getAttribute("dark")) {
-        $('<div id="CustomFilter" class="style-scope yt-dropdown-menu">' +
-            '<div id="FilterList" class="expand"> <img src="https://i.ibb.co/KqhSTQb/Screenshot-1.png"/>Фильтр видео </div>' +
-            '<div id=menu>' +
-            '<ul class="dropdown-content style-scope paper-menu-button dark">' +
-            '<li class="item dark" value="none">Удалить все новые видео</li>' +
-            '<li class="item dark" value="viewer">Удалить все просмотренные видео</li>' +
-            '</ul>' +
-            '</div></div>').insertAfter("#primary-items");
+        $(`<div id="CustomFilter" class="style-scope yt-dropdown-menu">
+            <div id="FilterList" class="expand"> <img src="https://i.ibb.co/KqhSTQb/Screenshot-1.png"/>${button}</div>
+            <div id=menu>
+            <ul class="dropdown-content style-scope paper-menu-button dark">
+            <li class="item dark" value="none">${filter1}</li>
+            <li class="item dark" value="viewer">${filter2}</li>
+            </ul>
+            </div></div>`).insertAfter("#primary-items");
     } else {
-        $('<div id="CustomFilter" class="style-scope ytd-channel-sub-menu-renderer">' +
-            '<div id="FilterList" class="expand"> <img src="https://i.ibb.co/JpF9yST/filter.png"/>Фильтр видео </div>' +
-            '<div id=menu>' +
-            '<ul class="dropdown-content style-scope paper-menu-button">' +
-            '<li class="item " value="none">Удалить все новые видео</li>' +
-            '<li class="item" value="viewer">Удалить все просмотренные видео</li>' +
-            '</ul>' +
-            '</div></div>').insertAfter("#primary-items");
+        $(`<div id="CustomFilter" class="style-scope ytd-channel-sub-menu-renderer">
+            <div id="FilterList" class="expand"> <img src="https://i.ibb.co/JpF9yST/filter.png"/>${button}</div>
+            <div id=menu>
+            <ul class="dropdown-content style-scope paper-menu-button">
+            <li class="item " value="none">${filter1}</li>
+            <li class="item" value="viewer">${filter2}</li>
+            </ul>
+            </div></div>`).insertAfter("#primary-items");
     }
-
 
     // По умолчанию кнопка скрыта
     $("#CustomFilter #menu").hide();

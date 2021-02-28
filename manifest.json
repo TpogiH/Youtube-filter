@@ -1,15 +1,16 @@
 {
     "manifest_version": 2,
-    "name": "Youtube filter",
-    "description": "Добавляет фильтр на странице со списком видео.",
-    "version": "1.0.6",
+    "name": "__MSG_extensionName__",
+    "description": "__MSG_extensionDescription__",
+    "version": "1.0.7",
+    "default_locale": "en",
     "icons": {
         "16": "images/icon_16.png",
         "48": "images/icon_48.png",
         "128": "images/icon_128.png"
     },
     "browser_action": {
-        "default_title": "Youtube filter",
+        "default_title": "__MSG_extensionName__",
         "default_popup": "popup.html"
     },
     "content_scripts": [{
