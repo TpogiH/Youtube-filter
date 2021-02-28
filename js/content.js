@@ -1,5 +1,6 @@
 let countInCheck, sel, real, timerDel, timerLoad, items,
-    needCount = 20;
+    needCount = 20,
+    el = $("#contents #items")[0];
 
 // Т.к. Ютуб не загружает каждый раз страницу, а работает с фреймами, то мы вешаем таймер, на проверку текущего адреса, и при необходимости добавляем кноку
 setInterval(() => {
@@ -10,29 +11,42 @@ setInterval(() => {
         deleteButton();
     }
 }, 500);
-console.log($("html"));
 
 // Удаляю выбранные видео
 function clear() {
-    if (sel == "none") {
-        $("ytd-two-column-browse-results-renderer #items").unbind("DOMNodeInserted").on("DOMNodeInserted", "YTD-THUMBNAIL-OVERLAY-TIME-STATUS-RENDERER", function(event) {
-            if ($(event.target).parent().children().length != 3) {
-                $(event.target).closest("ytd-grid-video-renderer").remove();
-                if (!countInCheck) {
-                    countInCheck = true;
-                    checkCount();
+    let observer = new MutationObserver(function(mutations) {
+        mutations.forEach(mutation => {
+            if (sel == "none") {
+                if (mutation.target.matches('div#overlays')) {
+                    if (mutation.target.childNodes.length != 3) {
+                        mutation.target.closest("ytd-grid-video-renderer").remove();
+                        if (!countInCheck) {
+                            countInCheck = true;
+                            checkCount();
+                        }
+                    }
+                }
+            } else if (sel == "viewer") {
+                if (mutation.target.matches('ytd-thumbnail-overlay-resume-playback-renderer')) {
+                    mutation.target.closest("ytd-grid-video-renderer").remove();
+                    if (!countInCheck) {
+                        countInCheck = true;
+                        checkCount();
+                    }
                 }
             }
-        });
-    } else if (sel == "viewer") {
-        $("ytd-two-column-browse-results-renderer #items").unbind("DOMNodeInserted").on("DOMNodeInserted", "YTD-THUMBNAIL-OVERLAY-RESUME-PLAYBACK-RENDERER", function(event) {
-            $(event.target).closest("ytd-grid-video-renderer").remove();
-            if (!countInCheck) {
-                countInCheck = true;
-                checkCount();
+
+            // Убираю анимацию загрузки
+            if (mutation.target.matches('ytd-continuation-item-renderer')) {
+                $("ytd-continuation-item-renderer:not(:last)").remove();
             }
         });
-    }
+    });
+
+    observer.observe(el, {
+        childList: true,
+        subtree: true,
+    });
 }
 
 // Проверяю количество и при необходимости загружаю новые видео
@@ -42,7 +56,6 @@ function checkCount() {
 
     function tick() {
         count = $("ytd-two-column-browse-results-renderer #items ytd-grid-video-renderer");
-        $("ytd-continuation-item-renderer:not(:last)").remove();
         if (count.length < needCount) {
             scroll = $(window).scrollTop();
             document.querySelector('ytd-continuation-item-renderer').scrollIntoView();
@@ -115,8 +128,6 @@ function addAction() {
         items = $("ytd-two-column-browse-results-renderer #items");
         items.children().each(function() {
             if (sel == 'none') {
-                console.log($(this));
-                console.log($(this)[0].nodeName);
                 if ($(this).find("#progress").length == 0 && $(this)[0].nodeName != 'YTD-CONTINUATION-ITEM-RENDERER') {
                     $(this).remove();
                     if (!countInCheck) {
