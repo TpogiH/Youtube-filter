@@ -9,9 +9,9 @@
         "message": "filter video"
     },
     "filter1": {
-        "message": "Delete all new video"
+        "message": "Delete all new videos"
     },
     "filter2": {
-        "message": "Delete all viewer video"
+        "message": "Delete all viewed videos"
     }
 }
