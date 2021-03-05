@@ -1,17 +1,1 @@
-{
-    "extensionName": {
-        "message": "Youtube filter"
-    },
-    "extensionDescription": {
-        "message": "Добавляет фильтр на странице со списком видео."
-    },
-    "button": {
-        "message": "фильтр видео"
-    },
-    "filter1": {
-        "message": "Удалить все новые видео"
-    },
-    "filter2": {
-        "message": "Удалить все просмотренные видео"
-    }
-}
+{"extensionName":{"message":"Youtube filter"},"extensionDescription":{"message":"Добавляет фильтр на странице со списком видео"},"button":{"message":"фильтр видео"},"filter1":{"message":"Удалить все новые видео"},"filter2":{"message":"Удалить все просмотренные видео"}}
