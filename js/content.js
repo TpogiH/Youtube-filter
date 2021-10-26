@@ -1,33 +1,39 @@
-let countInCheck, sel, real, timerDel, timerLoad, items, observerFilter,
+let countInCheck, sel, real, timerDel, timerLoad, items, observerFilter, observerVideo,
+    content = $("#content")[0],
     needCount = 20,
-    videoList = $("#contents #items")[0],
-    menu = $("#tabsContent")[0],
-    menuVideoTab = $("#tabsContent paper-tab")[1];
+    href = document.location.href;
 
+//слушатель на content, для определения перехода на канал
+let observHash = new MutationObserver(function(mutations) {
+    href = document.location.href;
+    if (href.match("youtube.com/c/.*")) {
+        mutations.forEach(mutation => {
+            if (mutation.target.matches('#tabsContent')) {
+                addButton();
+            }
+        });
+    } else {
+        deleteButton();
+    }
+});
 
-// Проверяю выбранную вкладку при загрузке страницы, если выбрана вкладка "Видео"
-if (menuVideoTab.getAttribute("aria-selected") == "true") {
+let observHashConfig = {
+    subtree: true,
+    childList: true
+};
+// проверяю URL при первом открытии
+if (href.match("youtube.com/c/.*")) {
     addButton();
+} else {
+    deleteButton();
 }
 
-//Вешаю слушатель на меню, для добавления / удаления кнопки
-let observerMenu = new MutationObserver(function(mutations) {
-    mutations.forEach(mutation => {
-        if (mutation.target.attributes["aria-selected"].value == "true") {
-            mutation.target == menuVideoTab ? waitHeaderMenu() : deleteButton()
-        }
-    });
-});
-
-
-observerMenu.observe(menu, {
-    subtree: true,
-    attributes: true,
-    attributeFilter: ["aria-selected"]
-});
+// запускаю слушатель в ожидании перехода на канал
+observHash.observe(content, observHashConfig);
 
 // Удаляю выбранные видео
 function clear() {
+    let videoList = $("#contents #items")[0];
     observerVideo = new MutationObserver(function(mutations) {
         mutations.forEach(mutation => {
             if (sel == "none") {
@@ -59,7 +65,7 @@ function clear() {
 
     observerVideo.observe(videoList, {
         childList: true,
-        subtree: true,
+        subtree: true
     });
 }
 
@@ -101,14 +107,35 @@ function waitHeaderMenu() {
 
 // Добавляю кнопку
 function addButton() {
-    if (!$('#CustomFilter').length) {
-        let button = chrome.i18n.getMessage('button'),
-            filter1 = chrome.i18n.getMessage('filter1'),
-            filter2 = chrome.i18n.getMessage('filter2');
+    let menu = $("#tabsContent")[0],
+        menuVideoTab = $("#tabsContent tp-yt-paper-tab")[1];
+
+    //слушатель на меню, для добавления / удаления кнопки
+    let observerMenu = new MutationObserver(function(mutations) {
+        mutations.forEach(mutation => {
+            if (mutation.target.attributes["aria-selected"].value == "true") {
+                mutation.target == menuVideoTab ? waitHeaderMenu() : deleteButton();
+            }
+        });
+    });
+
+    let observerMenuConfig = {
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["aria-selected"]
+    };
+
+    observerMenu.observe(menu, observerMenuConfig);
+
+    if (menuVideoTab.getAttribute("aria-selected") == "true") {
+        if (!$('#CustomFilter').length) {
+            let button = chrome.i18n.getMessage('button'),
+                filter1 = chrome.i18n.getMessage('filter1'),
+                filter2 = chrome.i18n.getMessage('filter2');
 
 
-        if (document.querySelector("html").getAttribute("dark")) {
-            $(`<div id="CustomFilter" class="style-scope yt-dropdown-menu">
+            if (document.querySelector("html").getAttribute("dark")) {
+                $(`<div id="CustomFilter" class="style-scope yt-dropdown-menu">
                             <div id="FilterList" class="expand"> <img src="https://i.ibb.co/KqhSTQb/Screenshot-1.png"/>${button}</div>
                             <div id=menu>
                             <ul class="dropdown-content style-scope paper-menu-button dark">
@@ -116,8 +143,8 @@ function addButton() {
                             <li class="item dark" value="viewer">${filter2}</li>
                             </ul>
                             </div></div>`).insertAfter("#primary-items");
-        } else {
-            $(`<div id="CustomFilter" class="style-scope ytd-channel-sub-menu-renderer">
+            } else {
+                $(`<div id="CustomFilter" class="style-scope ytd-channel-sub-menu-renderer">
                             <div id="FilterList" class="expand"> <img src="https://i.ibb.co/JpF9yST/filter.png"/>${button}</div>
                             <div id=menu>
                             <ul class="dropdown-content style-scope paper-menu-button">
@@ -125,32 +152,35 @@ function addButton() {
                             <li class="item" value="viewer">${filter2}</li>
                             </ul>
                             </div></div>`).insertAfter("#primary-items");
-        }
-
-        // По умолчанию кнопка скрыта
-        $("#CustomFilter #menu").hide();
-
-        // При щелчке раскрываем список
-        $("#CustomFilter #FilterList").click(function() {
-            $(this).next().animate({ 'height': 'toggle' });
-        });
-
-        // Прячем выпадающее меню, когда пользователь щелкает в другом месте
-        $(document).mouseup(function(e) {
-            var container = $("#CustomFilter #menu");
-            if (container.has(e.target).length === 0) {
-                container.hide();
             }
-        });
 
-        addAction();
+            // По умолчанию кнопка скрыта
+            $("#CustomFilter #menu").hide();
+
+            // При щелчке раскрываем список
+            $("#CustomFilter #FilterList").click(function() {
+                $(this).next().animate({ 'height': 'toggle' });
+            });
+
+            // Прячем выпадающее меню, когда пользователь щелкает в другом месте
+            $(document).mouseup(function(e) {
+                var container = $("#CustomFilter #menu");
+                if (container.has(e.target).length === 0) {
+                    container.hide();
+                }
+            });
+
+            addAction();
+        }
     }
 }
 
 // Удаляю кнопку
 function deleteButton() {
     $("#CustomFilter").remove();
-    observerVideo.disconnect();
+    if (observerVideo) {
+        observerVideo.disconnect();
+    }
 }
 
 // Вешаем листенер на нажатие кнопки фильтра
